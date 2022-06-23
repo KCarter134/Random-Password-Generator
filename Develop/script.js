@@ -4,120 +4,100 @@
 var generateBtn = document.querySelector("#generate");
 
 // character arrays
-const alphabet = [
-  "a",
-  "b",
-  "c",
-  "d",
-  "e",
-  "f",
-  "g",
-  "h",
-  "i",
-  "j",
-  "k",
-  "l",
-  "m",
-  "n",
-  "o",
-  "p",
-  "q",
-  "r",
-  "s", 
-  "t",
-  "u",
-  "v",
-  "w",
-  "x",
-  "y",
-  "z",
-];
-const numbers = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
-const special = ["!", "@", "#", "$", "%", "^", "&", "*"];
+const numerics = ['1','2','3','4','5','6','7','8','9']
+const alphabet = ['q','w','e','r','t','y','u','i','o','p','a','s','d','f','g',
+    'h','j','k','l','z','x','c','v','b','n','m','e']
+const special = ['!','@','#','$','%','^','&','?']
 
-let uppercase = true;
-let lowercase = true;
-let numberChars = true;
-let specialChars = true;
 
-function getSelections () {
-  var includeUpper = prompt("Would you like uppercase letters? (type (y for yes) or (n for no)")
-  console.log("uppercase = " + includeUpper);
-  if (includeUpper == "n") {
-    uppercase = false;
-  }
+let upperCase = true
+let lowerCase = true
+let numericChars = true
+let specialChars = true
 
-  var includeLower = prompt("Would you like lowercase letters? (type (y for yes) or (n for no)")
-  console.log("lowercase = " + includeLower);
-  if (includeLower == "n") {
-    lowercase = false;
-  }
+function getSelections(){
+  console.log("it worked")
+  upperCase = true
+  lowerCase = true
+  numericChars = true
+  specialChars = true
+  
+    let askUpperCase = prompt("Include upperCase? (y/n)").toLowerCase()
+    while(askUpperCase != "n" && askUpperCase != "y"){
+        askUpperCase = prompt("INVALID ANSWER Include upperCase? (y/n)").toLowerCase()
+    }
+    if (askUpperCase == "n"){
+        upperCase = false;
+    }
 
-  var includeNumbers = prompt("Would you like numbers? (type (y for yes) or (n for no)")
-  console.log("numberChars = " + includeNumbers);
-  if (includeNumbers == "n") {
-    numberChars = false;
-  }
+    let askLowerCase = prompt("Include lowerCase? (y/n)").toLowerCase()
+    while(askLowerCase != "n" && askLowerCase != "y"){
+        askLowerCase = prompt("INVALID ANSWER Include lowerCase? (y/n)").toLowerCase()
+    }
+    if(askLowerCase == "n"){
+        lowerCase = false
+    }
 
-  var includeSpecial = prompt("Would you like to be special? (type (y for yes) or (n for no)")
-  console.log("specialChars = " + includeSpecial);
-  if (includeSpecial == "n") {
-    specialChars = false;
-  }
+    let askNumericChars = prompt("Include numbers? (y/n)").toLowerCase()
+    while(askNumericChars != "n" && askNumericChars != "y"){
+        askNumericChars = prompt("INVALID ANSEWR Include numbers? (y/n)").toLowerCase()
+    }
+    if(askNumericChars == "n"){
+        numericChars = false;
+    }
+
+    let askSpecialChars = prompt("Include special chars? (y/n)").toLocaleLowerCase()
+    while(askSpecialChars != "n" && askSpecialChars != "y"){
+        askSpecialChars = prompt("INVALID ANSWER Include special chars? (y/n)").toLocaleLowerCase()
+    }
+    if(askSpecialChars == "n"){
+        specialChars = false;
+    }
+
 }
 
-function generatePassword() {
-  let result = "";
- 
-  var length = prompt(
-    "How many characters would you like your password to be?"
-  );
+function generatePassword(){
+    let numChars = prompt('How many characters? 8-128: ');
 
-  console.log(length + " characters");
-  // password must be between 8 & 128
-  if (length < 8 || length > 128) {
-    alert("Password must be between 8 and 128 characters!");
-    return generatePassword();
-  }
-  getSelections();
-
-  let selectedArray = [];
-  if(numberChars == true){
-    selectedArray = selectedArray.concat(numbers);
-    console.log("numbers have been added")
-  }
-  if(specialChars == true){
-      selectedArray = selectedArray.concat(special);
-      console.log("special characters have been added")
-  }
-  if(lowercase == true || uppercase == true){
-      selectedArray = selectedArray.concat(alphabet);
-      console.log("alphabet has been added")
-  }
-  console.log("Array length " + selectedArray.length);
-  console.log("uppercase Boolean = " + uppercase);
-  console.log("lowercase Boolean = " + lowercase);
-  console.log("numberChars Boolean = " + numberChars);
-  console.log("specialChars Boolean = " + specialChars);
-  for (let i = 0; i < length; i++) {
-    var randomChoice = Math.floor(Math.random() * selectedArray.length);
-
-    var currentChar = selectedArray[randomChoice];
-
-  if (uppercase == true || lowercase == true) {
-    var capitalLetters = Math.floor(Math.random() *2) + 1;
-    if(uppercase == true && lowercase == true) {
-      if (capitalLetters == 1) {
-        currentChar = currentChar.toUpperCase();
-      }
-    } else if (uppercase == true && lowercase == false) {
-      currentChar = currentChar.toUpperCase();
+    while(isNaN(numChars) || numChars < 8 || numChars > 128){
+        numChars = prompt('TRY AGAIN. How many characters? 8-128: ');
     }
-  }
 
-    result = result.concat(currentChar);
-  }
-  return result;
+    getSelections();
+
+    let selectedArray = [];
+    if(numericChars){
+        selectedArray = selectedArray.concat(numerics)
+    }
+    if(specialChars){
+        selectedArray = selectedArray.concat(special)
+    }
+    if(upperCase || lowerCase){
+        selectedArray = selectedArray.concat(alphabet);
+    }
+
+
+    let result = "";
+    for (let i = 0; i < numChars; i++) {
+        let choice = Math.floor(Math.random() * selectedArray.length);
+
+        let currentChar = selectedArray[choice];
+
+        if (upperCase || lowerCase) {
+            let caps = Math.floor(Math.random() * 2) + 1;
+            if (upperCase && lowerCase) {
+                if (caps == 1) {
+                    currentChar = currentChar.toUpperCase();
+                }
+            } else if (upperCase && !lowerCase) {
+                currentChar = currentChar.toUpperCase();
+            }
+        }
+
+        result = result.concat(currentChar);
+    }
+    console.log(result)
+    return result
 }
 
 // Write password to the #password input
